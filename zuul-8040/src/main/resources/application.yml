@@ -1,0 +1,36 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: cloud-shop-gateway
+  cloud:
+    consul:
+      port: 8500
+      host: 127.0.0.1
+      discovery:
+        service-name: ${spring.application.name}
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/pinyougoudb?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username: "root"
+    password: "0701"
+
+  date:
+    solr:
+      host: http://localhost:8080/solr/
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.cloud.shop.entitlse
+
+zuul:
+  routes:
+    api-a:
+      service-id: colud-shop-query
+
+  servlet-path: /
+
+
+
+

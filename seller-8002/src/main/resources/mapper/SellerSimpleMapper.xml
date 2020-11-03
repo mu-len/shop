@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.SellerSimpleMapper">
+
+    <resultMap id="SellerResultMap" type="SellerSimple">
+        <id column="seller_id" property="sellerId" javaType="String"></id>
+        <result column="name" property="name" javaType="String"></result>
+        <result column="nick_name" property="nickName" javaType="String"></result>
+        <result column="linkman_name" property="linkmanName" javaType="String"></result>
+        <result column="linkman_mobile" property="linkmanMobile" javaType="String"></result>
+        <result column="status" property="status" javaType="String"></result>
+    </resultMap>
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findSeller0SimpleList" resultMap="SellerResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select seller_id,name,nick_name,linkman_name,linkman_mobile,status from tb_seller where status=0
+    </select>
+
+    <select id="findSellerSimpleList" resultMap="SellerResultMap">
+        select seller_id,name,nick_name,linkman_name,linkman_mobile,status from tb_seller
+    </select>
+
+    <update id="stateChange" parameterType="String">
+        update tb_seller set status=1 where seller_id=#{sellerId}
+    </update>
+
+    <select id="findSS0LikeNANi" parameterType="String" resultMap="SellerResultMap">
+        select seller_id,name,nick_name,linkman_name,linkman_mobile,status from tb_seller where status=0
+        <if test="name!=null and name!=''">
+            and name like concat("%",#{name},"%")
+        </if>
+        <if test="nickName!=null and nickName!=''">
+            and nick_name like concat("%",#{nickName},"%")
+        </if>
+    </select>
+
+    <select id="findSSLikeNANiByS" resultMap="SellerResultMap" parameterType="String">
+        select seller_id,name,nick_name,linkman_name,linkman_mobile,status from tb_seller where 1=1
+        <if test="name!=null and name!=''">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="nickName!=null and nickName!=''">
+            and nick_name like concat('%',#{nickName},'%')
+        </if>
+        <if test="state==0">
+            and status=0
+        </if>
+        <if test="state==1">
+            and status=1
+        </if>
+        <if test="state==2">
+            and status=2
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.SellerDetailsMapper">
+
+    <resultMap id="SellerDetailsResultMap" type="SellerDetails">
+        <id column="seller_id" property="sellerId" javaType="String"></id>
+        <result column="name" property="name" javaType="String"></result>
+        <result column="mobile" property="mobile" javaType="String"></result>
+        <result column="telephone" property="telephone" javaType="String"></result>
+        <result column="status" property="status" javaType="String"></result>
+        <result column="address_detail" property="addressDetail" javaType="String"></result>
+        <result column="linkman_name" property="linkmanName" javaType="String"></result>
+        <result column="linkman_qq" property="linkmanQq" javaType="String"></result>
+        <result column="linkman_mobile" property="linkmanMobile" javaType="String"></result>
+        <result column="linkman_email" property="linkmanEmail" javaType="String"></result>
+        <result column="license_number" property="licenseNumber" javaType="String"></result>
+        <result column="tax_number" property="taxNumber" javaType="String"></result>
+        <result column="org_number" property="orgNumber" javaType="String"></result>
+        <result column="legal_person" property="legalPerson" javaType="String"></result>
+        <result column="legal_person_card_id" property="legalPersonCardId" javaType="String"></result>
+        <result column="bank_user" property="bankUser" javaType="String"/>
+        <result column="bank_name" property="bankName" javaType="String"/>
+    </resultMap>
+
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findSellerDetailsById" parameterType="String" resultMap="SellerDetailsResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select seller_id,name,mobile,telephone,status,address_detail,linkman_name,linkman_qq,linkman_mobile,linkman_email,
+        license_number,tax_number,org_number,legal_person,legal_person_card_id,bank_user,bank_name
+        from tb_seller where seller_id=#{id}
+    </select>
+</mapper>

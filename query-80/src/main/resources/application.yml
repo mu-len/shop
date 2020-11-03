@@ -1,0 +1,30 @@
+server:
+  port: 80
+spring:
+  application:
+    name: colud-shop-query
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        enabled: true
+  data:
+    redis:
+      repositories:
+        enabled: true
+
+    solr:
+      host: http://localhost:8080/solr/
+
+ribbon:
+  #建立连接所用的时间最大5秒
+  ReadTimeout: 5000
+  #建立连接后从服务器读取到可用资源的最大时间5秒
+  ConnectTimeout: 5000
+
+#开启访问信息日志打印
+logging:
+  level:
+    com\cloud\shop\service\GoodsFeignService: debug

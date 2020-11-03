@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.cloud.shop.entitlse.UserVo">
+        <id column="id" property="id" javaType="Long"></id>
+        <result column="username" property="username" javaType="String"></result>
+        <result column="password" property="password" javaType="String"></result>
+        <result column="phone" property="phone" javaType="String"></result>
+        <result column="email" property="email" javaType="String"></result>
+        <result column="created" property="created" javaType="Date"></result>
+        <result column="updated" property="updated" javaType="Date"></result>
+        <result column="status" property="status" javaType="String"></result>
+    </resultMap>
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findUserByUAndP" resultMap="UserResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select id,username,password,phone,email,created,updated,status from tb_user where username=#{username} and password=#{password}
+    </select>
+
+    <select id="findUserById" parameterType="Long" resultMap="UserResultMap">
+        select id,username,password,phone,email,created,updated,status from tb_user where id=#{id}
+    </select>
+
+    <insert id="createUser" parameterType="UserVo" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_user(id,username,password,phone,email,created,updated,status)
+        values (#{id},#{username},#{password},#{phone},#{email},#{created},#{updated},#{status})
+    </insert>
+
+    <select id="findUserByName" parameterType="String" resultMap="UserResultMap">
+        select a.id,a.username,a.password,a.phone,a.email,a.created,a.updated,a.status,b.authority from tb_user a
+        join tb_authority b on a.id=b.user_id where a.username=#{username}
+    </select>
+</mapper>

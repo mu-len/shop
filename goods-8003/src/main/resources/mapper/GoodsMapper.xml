@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.GoodsMapper">
+
+    <resultMap id="GoodsResultMap" type="Goods">
+        <id column="id" property="id" javaType="Long"/>
+        <result column="seller_id" property="sellerId" javaType="String"/>
+        <result column="goods_name" property="goodsName" javaType="String"/>
+        <result column="audit_status" property="auditStatus" javaType="String"/>
+        <result column="caption" property="caption" javaType="String"/>
+        <result column="price" property="price" javaType="Long"/>
+        <result column="is_delete" property="isDelete" javaType="String"/>
+        <result column="category1" property="category1" javaType="String"/>
+        <result column="category2" property="category2" javaType="String"/>
+        <result column="category3" property="category3" javaType="String"/>
+    </resultMap>
+
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findGoodsList" resultMap="GoodsResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select a.id,a.seller_id,a.goods_name,a.audit_status,a.caption,a.price,a.is_delete,
+        b.name as category1,c.name as category2,d.name as category3
+        from tb_goods a join tb_item_cat b on a.category1_id=b.id
+        join tb_item_cat c on a.category2_id=c.id
+        join tb_item_cat d on a.category3_id=d.id
+    </select>
+
+    <select id="findGoodsById" parameterType="Long" resultMap="GoodsResultMap">
+        select id,seller_id,goods_name,audit_status,caption,price,is_delete,category1_id,category2_id,category3_id
+        from tb_goods where id=#{id}
+    </select>
+
+    <select id="findLikeName" resultMap="GoodsResultMap" parameterType="String">
+        select id,seller_id,goods_name,audit_status,caption,price,is_delete,category1_id,category2_id,category3_id
+        from tb_goods where goods_name like concat('%',#{name},'%')
+    </select>
+
+    <delete id="deleteGoods" parameterType="Long">
+        delete from tb_goods where id in
+        <foreach collection="array" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

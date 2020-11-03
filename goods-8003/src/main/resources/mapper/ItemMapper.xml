@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.ItemMapper">
+
+    <resultMap id="ItemResultMap" type="Item">
+        <id column="id" property="id" javaType="Long"/>
+        <result column="title" property="title" javaType="String"/>
+        <result column="sell_point" property="sellPoint" javaType="String"/>
+        <result column="price" property="price" javaType="Double"/>
+        <result column="stock_count" property="stockCount" javaType="Integer"/>
+        <result column="num" property="num" javaType="Integer"/>
+        <result column="barcode" property="barcode" javaType="String"/>
+        <result column="image" property="image" javaType="String"/>
+        <result column="categoryId" property="categoryid" javaType="Long"/>
+        <result column="status" property="status" javaType="String"/>
+        <result column="create_time" property="createTime" javaType="Date"/>
+        <result column="update_time" property="updateTime" javaType="Date"/>
+        <result column="item_sn" property="itemSn" javaType="String"/>
+        <result column="cost_price" property="costPirce" javaType="Double"/>
+        <result column="market_price" property="marketPrice" javaType="Double"/>
+        <result column="is_default" property="isDefault" javaType="String"/>
+        <result column="goods_id" property="goodsId" javaType="Long"/>
+        <result column="seller_id" property="sellerId" javaType="String"/>
+        <result column="cart_thumbnail" property="cartThumbnail" javaType="String"/>
+        <result column="category" property="category" javaType="String"/>
+        <result column="brand" property="brand" javaType="String"/>
+        <result column="spec" property="spec" javaType="String"/>
+        <result column="seller" property="seller" javaType="String"/>
+    </resultMap>
+
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findAllItem" resultMap="ItemResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select * from tb_item
+    </select>
+
+    <insert id="createItem" parameterType="Item" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_item(title,sell_point,price,stock_count,num,barcode,image,categoryId,status,create_time,update_time,
+        item_sn,cost_price,market_price,is_default,goods_id,seller_id,cart_thumbnail,category,brand,spec,seller) values (
+        #{title},#{sellPoint},#{price},#{stockCount},#{num},#{barcode},#{image},#{categoryid},#{status},#{createTime},#{updateTime},
+        #{itemSn},#{costPirce},#{marketPrice},#{isDefault},#{goodsId},#{sellerId},#{cartThumbnail},#{category},#{brand},#{spec},#{seller})
+    </insert>
+
+    <delete id="deleteItem" parameterType="Long">
+        delete from tb_item where id=#{id}
+    </delete>
+</mapper>

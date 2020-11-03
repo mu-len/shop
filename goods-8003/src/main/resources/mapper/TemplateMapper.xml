@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.TemplateMapper">
+
+    <resultMap id="TemplateResultMap" type="Template">
+        <id column="id" property="id" javaType="Long"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="spec_ids" property="specIds" javaType="String"/>
+        <result column="brand_ids" property="brandIds" javaType="String"/>
+        <result column="custom_attribute_items" property="items" javaType="String"/>
+    </resultMap>
+
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findTemplatePageList" resultMap="TemplateResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select * from tb_type_template
+    </select>
+
+    <select id="findTemplateLikeName" resultMap="TemplateResultMap" parameterType="String">
+        select * from tb_type_template where name like concat('%',#{name},'%')
+    </select>
+
+    <select id="findTemplateById" parameterType="Long" resultMap="TemplateResultMap">
+        select * from tb_type_template where id=#{id}
+    </select>
+
+    <insert id="createTemplate" parameterType="Template" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_type_template(name,spec_ids,brand_ids,custom_attribute_items)
+        values (#{name},#{specIds},#{brandIds},#{items})
+    </insert>
+
+    <update id="updateTemplate" parameterType="Template">
+        update tb_type_template set name=#{name},spec_ids=#{specIds},brand_ids=#{brandIds},
+        custom_attribute_items=#{items} where id=#{id}
+    </update>
+
+    <delete id="deleteTemplate" parameterType="Long">
+        delete from tb_type_template where id=#{id}
+    </delete>
+
+    <delete id="deleteTemplates" parameterType="Long">
+        delete from tb_type_template where id in
+        <foreach collection="array" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

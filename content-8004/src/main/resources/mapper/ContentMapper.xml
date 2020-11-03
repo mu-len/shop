@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--指定一个唯一的映射id-->
+<mapper namespace="com.cloud.shop.dao.ContentMapper">
+
+    <resultMap id="ContentResultMap" type="Content">
+        <id column="id" property="id" javaType="Long"/>
+        <result column="name" property="name" javaType="String"/>
+        <result column="title" property="title" javaType="String"/>
+        <result column="url" property="url" javaType="String"/>
+        <result column="pic" property="pic" javaType="String"/>
+        <result column="status" property="status" javaType="Long"/>
+        <result column="sort_order" property="sortOrder" javaType="Long"/>
+    </resultMap>
+    <!--为sql语句指定一个唯一id，parameterType:指定查询参数类型，resultType:指定返回结果集类型(路径)-->
+    <select id="findContentPageList" resultMap="ContentResultMap">
+        <!--这里写sql，如:select * from t_user where id=#{id} -->
+        select a.id,b.name,a.title,a.url,a.pic,a.status,a.sort_order
+        from tb_content a join tb_content_category b where a.category_id=b.id
+    </select>
+
+    <select id="findContentById" resultMap="ContentResultMap" parameterType="Long">
+        select a.id,b.name,a.title,a.url,a.pic,a.status,a.sort_order
+        from tb_content a join tb_content_category b where a.category_id=b.id
+        and a.id=${id}
+    </select>
+
+    <select id="findContentLikeName" resultMap="ContentResultMap" parameterType="String">
+        select a.id,b.name,a.title,a.url,a.pic,a.status,a.sort_order
+        from tb_content a join tb_content_category b where a.category_id=b.id
+        and b.name like concat('%',#{name},'%')
+    </select>
+
+    <insert id="createContent" parameterType="Content" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_content(category_id,title,url,pic,status,sort_order)
+        values (#{name},#{title},#{url},#{pic},#{status},#{sortOrder})
+    </insert>
+
+    <update id="updateContent" parameterType="Content">
+        update tb_content set
+        category_id=#{name},title=#{title},url=#{url},pic=#{pic},status=#{status},sort_order=#{sortOrder}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteContents" parameterType="Long">
+        delete from tb_content where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
